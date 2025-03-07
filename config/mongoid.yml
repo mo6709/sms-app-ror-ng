@@ -1,0 +1,21 @@
+development:
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] %>
+      options:
+        server_selection_timeout: 5
+        max_pool_size: 5
+
+test:
+  clients:
+    default:
+      uri: mongodb://mongodb:27017/sms_app_test
+      options:
+        server_selection_timeout: 5
+
+production:
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] %>
+      options:
+        server_selection_timeout: 5
