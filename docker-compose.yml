@@ -29,7 +29,7 @@ services:
       - "4200:4200"
     volumes:
       - ./frontend:/app
-      - /app/node_modules
+      - frontend_node_modules:/frontend/node_modules
     depends_on:
       - backend
     environment:
@@ -49,3 +49,4 @@ services:
 volumes:
   mongodb_data:
   bundle_cache:
+  frontend_node_modules:
