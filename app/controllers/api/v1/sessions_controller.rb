@@ -51,7 +51,7 @@ module Api
 
             def generate_jwt_token(user)
                 JWT.encode(
-                    {
+                    { 
                         sub: user.id.to_s,
                         jti: user.jti,
                         exp: 24.hours.from_now.to_i

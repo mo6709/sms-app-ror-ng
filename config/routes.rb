@@ -19,7 +19,11 @@ Rails.application.routes.draw do
                    sign_out: 'logout',
                    registration: 'register'
                  }
-      resources :sms, only: [:create, :index]
+      resources :sms, only: [:create, :index] do
+        collection do
+          post :status
+        end
+      end
     end
   end
 end

@@ -137,12 +137,10 @@ export class SendMessageComponent {
     ).subscribe({
       next: (response: any) => {
         this.sending = false;
-        // Reset form
         this.newMessage = {
           to_number: '',
           message: ''
         };
-        // Emit event to notify parent component
         this.messageSent.emit();
       },
       error: (error) => {
