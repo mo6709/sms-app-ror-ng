@@ -7,11 +7,11 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*'
+    origins '*'  # Allow all origins including ngrok
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      credentials: false,
+      credentials: false,  # Must be false when using '*' for origins
       expose: ['Authorization']
   end
 end

@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { MessageListComponent } from './message-list/message-list.component';
+import { HeaderComponent } from '../header.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SendMessageComponent, MessageListComponent],
+  imports: [SendMessageComponent, MessageListComponent, HeaderComponent],
   template: `
+    <app-header></app-header>
+    
     <div class="dashboard-container">
       <h1>Dashboard</h1>
       
@@ -20,7 +23,7 @@ import { MessageListComponent } from './message-list/message-list.component';
     .dashboard-container {
       padding: 20px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 80px auto 0;  /* Added top margin to account for fixed header */
     }
 
     .dashboard-layout {
