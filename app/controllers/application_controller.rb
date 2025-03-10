@@ -1,5 +1,6 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
   include ActionController::MimeResponds
+  protect_from_forgery with: :null_session
   before_action :authenticate_user!
   respond_to :json
   
