@@ -1,24 +1,16 @@
 # README
+The Docker-built application consists of two separate services that will be executed within the same container. 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+You will need to add your own environment variables in the `.env` file.
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=
+DEVISE_JWT_SECRET_KEY=
+BASE_URL=
 
-Things you may want to cover:
 
-* Ruby version
+RUN docker-compose build 
+RUN docker-compose up
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+backend on `baseurl/api/v1/auth/login`
+fornt end on `baseurl/login`
