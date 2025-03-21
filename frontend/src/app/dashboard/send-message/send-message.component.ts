@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Injectable, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -105,6 +105,7 @@ import { Router } from '@angular/router';
   `]
 })
 export class SendMessageComponent {
+  // private store = inject(MessagesStore);
   @Output() messageSent = new EventEmitter<void>();
 
   sending: boolean = false;
@@ -118,6 +119,8 @@ export class SendMessageComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   sendMessage() {
+    // this.store.sendMessage(this.newMessage);
+
     this.sending = true;
     this.sendError = '';
     

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -135,9 +135,11 @@ import { Router } from '@angular/router';
   `]
 })
 export class MessageListComponent implements OnInit, OnDestroy {
-  messages: any[] = [];
-  loading: boolean = true;
-  error: string = '';
+  private store = inject(MessagesStore);
+
+  messages: any[] = []; //this.store.messages$;
+  loading: boolean = true; //this.store.loading$;
+  error: string = ''; //this.store.error$;
   private refreshInterval: any;
 
   constructor(private http: HttpClient, private router: Router) {}
