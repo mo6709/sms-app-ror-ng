@@ -21,6 +21,23 @@ services:
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     # command: bash -c "rm -f tmp/pids/server.pid && /rails/bin/rails server -p 3000 -b '0.0.0.0'"
 
+  redis:
+    image: redis:latest
+    port: 
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - mongodb
+    environment:
+      - REDIS_URL: radis://redis:6379/0
+
   frontend:
     build:
       context: ./frontend
@@ -50,3 +67,4 @@ volumes:
   mongodb_data:
   bundle_cache:
   frontend_node_modules:
+  redis_data:
