@@ -10,7 +10,9 @@ services:
       - .:/rails
       - bundle_cache:/usr/local/bundle
     depends_on:
+      # - redis
       - mongodb
+
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/sms_app_development
       - RAILS_ENV=development
@@ -18,25 +20,33 @@ services:
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
       - DEVISE_JWT_SECRET_KEY=${DEVISE_JWT_SECRET_KEY}
+      - REDIS_URL=redis://redis:6379/1
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     # command: bash -c "rm -f tmp/pids/server.pid && /rails/bin/rails server -p 3000 -b '0.0.0.0'"
 
-  redis:
-    image: redis:latest
-    port: 
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-  sidekiq:
-    build: .
-    command: bundle exec sidekiq
-    volumes:
-      - .:/app
-    depends_on:
-      - redis
-      - mongodb
-    environment:
-      - REDIS_URL: radis://redis:6379/0
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+
+  # sidekiq:
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   command: bundle exec sidekiq
+  #   volumes:
+  #     - .:/rails
+  #     - bundle_cache:/usr/local/bundle
+  #   depends_on:
+  #     - redis
+  #     - mongodb
+  #   environment:
+  #     - MONGODB_URI=mongodb://mongodb:27017/sms_app_development
+  #     - RAILS_ENV=development
+  #     - REDIS_URL=redis://redis:6379/1
+  #   working_dir: /rails
 
   frontend:
     build:
