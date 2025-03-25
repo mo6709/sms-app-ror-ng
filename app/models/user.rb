@@ -17,7 +17,7 @@ class User
     field :status, type: String, default: 'pending'
     field :approval_count, type: Integer, default: 0
     
-    validate :status, inclusion: { in: ['pending', 'active', 'rejected'] }
+    validates :status, inclusion: { in: ['pending', 'active', 'rejected'] }
 
     has_many :sms_messages
     has_many :approval_records

@@ -10,8 +10,8 @@ class SmsMessage
 
     belongs_to :user
 
-    validates :to_number, presence: true
-    validates :message, presence: true
+    validate :to_number, presence: true
+    validate :message, presence: true
 
     index({ twilio_sid: 1 }, { sparse: true })
 end

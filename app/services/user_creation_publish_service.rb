@@ -3,10 +3,13 @@ class UserCreationPublishService
     class << self
         def publish_notify_managers(payload_data)
             message = {
-                event: 'new_user',
-                payload: payload_data,
-                timestamp: Time.current
-            }.to_json
+                event_type: 'approval',
+                user: {
+                  id: payload_data[:user_id],
+                  manager_ids: payload_data[:manager_ids]
+                },
+                timestamp: Time.current.to_i
+            }
 
             # $redis.publish('approval', message)
             RedisClient.publish(message)
@@ -14,9 +17,12 @@ class UserCreationPublishService
 
         def publish_notify_sales_team(payload_data)
             message = {
-                event: 'new_user',
-                payload: { **payload_data, sales_teams: ['home_owners', 'mortgage'] },
-                timestamp: Time.current
+                event_type: 'sales_team',
+                user: {
+                  id: payload_data[:user_id],
+                  sales_teams: ['home_owners', 'mortgage']
+                },
+                timestamp: Time.current.to_i
             }
 
             # $redis.publish('sales_team', message)

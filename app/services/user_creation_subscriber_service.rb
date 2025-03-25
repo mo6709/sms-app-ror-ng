@@ -23,9 +23,10 @@ class UserCreationSubscriberService
 
     class << self
         def start
-            RedisClient.subscrib do |data|
+            puts "Starting Redis subscription..."
+            RedisClient.subscribe do |data|
                 process_message(data)
-            rescue StandatError
+            rescue StandardError => e
                 Rails.logger.error("Subscription error: #{e.message}")
             end
         end
@@ -40,19 +41,29 @@ class UserCreationSubscriberService
             
             Rails.logger.info "=== Received Message ==="
             Rails.logger.info data.inspect
-
+            
+            # puts data.inspect
+            
             # case data['event_type']
             # when 'approval'
-            #     puts "handle_approval()"
+            #     puts "Processing approval event"
+            #     handle_approval(data)
             # when 'sales_team'
-            #     puts "handle_sales_team()"
+            #     puts "Processing sales team event"
+            #     handle_sales_team(data)
+            # else
+            #     puts "Unknown event type: #{data['event_type']}"
             # end
         end
 
         def handle_approval(data)
+            puts "Handling approval for user: #{data['user']['name']}"
+            # Your approval logic here
         end
 
         def handle_sales_team(data)
+            puts "Handling sales team notification for user: #{data['user']['name']}"
+            # Your sales team logic here
         end
     end
 end
