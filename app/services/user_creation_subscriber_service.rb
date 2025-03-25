@@ -23,11 +23,20 @@ class UserCreationSubscriberService
 
     class << self
         def start
+            puts "+++++++++++++++++++++++++++++++++"
             puts "Starting Redis subscription..."
-            RedisClient.subscribe do |data|
-                process_message(data)
+            puts "+++++++++++++++++++++++++++++++++"
+
+            Rails.logger.info "Starting Redis subscription service..."
+            
+            begin
+                RedisClient.subscribe do |data|
+                    process_message(data)
+                end
             rescue StandardError => e
+                puts "Subscription error: #{e.message}"
                 Rails.logger.error("Subscription error: #{e.message}")
+                Rails.logger.error(e.backtrace.join("\n"))
             end
         end
     
@@ -38,11 +47,16 @@ class UserCreationSubscriberService
             puts "-------------------------------------------"
             puts "I am at the final place to process the data"
             puts "-------------------------------------------"
+            puts "DATA RECEIVED: #{data.inspect}"
             
+            # Log to both console and Rails logger
             Rails.logger.info "=== Received Message ==="
             Rails.logger.info data.inspect
             
-            # puts data.inspect
+            # Write to log file directly to ensure it gets captured
+            File.open(Rails.root.join('log', 'redis_messages.log'), 'a') do |f|
+              f.puts "#{Time.now}: Received message: #{data.inspect}"
+            end
             
             # case data['event_type']
             # when 'approval'
