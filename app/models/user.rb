@@ -32,10 +32,10 @@ class User
 
     # OPTIMIZATION #3: TTL index for automatically expiring documents
     # Automatically remove reset password tokens after 6 hours
-    index({ reset_password_sent_at: 1 }, { expire_after: 6.hours, background: true })
+    index({ reset_password_sent_at: 1 }, {   expire_after_seconds: 21600, background: true })
 
     # OPTIMIZATION #4: Specify fields you'll never need to query to omit from indexes
-    field :login_history, type: Array, default: [], index: false
+    field :login_history, type: Array, default: []
 
     # Callbacks
     before_create :ensure_jti

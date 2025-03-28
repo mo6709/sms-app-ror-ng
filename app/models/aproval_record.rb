@@ -1,4 +1,7 @@
-class ApprovalRecord < MongoidRcord
+class ApprovalRecord
+    include Mongoid::Document
+    include Mongoid::Timestamps
+    
     field :status, type: String
     field :notes, type: String
    

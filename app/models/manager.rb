@@ -1,3 +1,6 @@
-class Manager < MongoidRcord
+class Manager
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
     field :name, type: String
 end
