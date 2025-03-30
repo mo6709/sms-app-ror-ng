@@ -34,12 +34,20 @@ module Api
                         status: params[:MessageStatus],
                         error_message: params[:ErrorMessage]
                     )
+
+                    # send a job to queue to process asyn
+                    SaveTwilioInfoJob.perform_async(params[:MessageId]);
+
                     head :ok
                 else
                     head :not_found
                 end
             end
 
+            def show
+                sms_id = params[:id]
+                SmsMessage.find_by(sms_id)
+            end
             
             private
 

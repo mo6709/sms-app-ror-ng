@@ -16,7 +16,7 @@ ENV RAILS_ENV="development" \
     BUNDLE_PATH="/usr/local/bundle"
 
 # Install application gems
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile ./
 
 # Add platforms and install gems
 RUN bundle lock --add-platform x86_64-linux aarch64-linux && \
