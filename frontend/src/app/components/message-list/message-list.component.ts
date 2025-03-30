@@ -135,7 +135,7 @@ import { Router } from '@angular/router';
   `]
 })
 export class MessageListComponent implements OnInit, OnDestroy {
-  private store = inject(MessagesStore);
+  // private store = inject(MessagesStore);
 
   messages: any[] = []; //this.store.messages$;
   loading: boolean = true; //this.store.loading$;

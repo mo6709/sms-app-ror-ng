@@ -1,19 +1,28 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { MessageListComponent } from './message-list/message-list.component';
 import { HeaderComponent } from '../header.component';
+import { ManagerDashboard } from './manager-dashboard/manager-dashboard.component'
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SendMessageComponent, MessageListComponent, HeaderComponent],
+  imports: [SendMessageComponent, MessageListComponent, ManagerDashboard, HeaderComponent, CommonModule],
   template: `
     <app-header></app-header>
     
     <div class="dashboard-container">
-      <h1>Dashboard</h1>
+      <button (click)="toggleManagerMode()">
+        Switch to {{ isManager ? 'User' : 'Manager' }} Mode
+      </button>
       
-      <div class="dashboard-layout">
+      <h1>Dashboard</h1>
+      <div *ngIf="isManager" class="manager-dashboard-layout">
+        <app-manager-dashboard #managerDashboard></app-manager-dashboard>
+      </div>
+
+      <div *ngIf="!isManager" class="dashboard-layout">
         <app-send-message (messageSent)="onMessageSent()"></app-send-message>
         <app-message-list #messageList></app-message-list>
       </div>
@@ -46,10 +55,16 @@ import { HeaderComponent } from '../header.component';
   `]
 })
 export class DashboardComponent {
+  isManager = false;
+
   onMessageSent() {
     const messageList = document.querySelector('app-message-list') as any;
     if (messageList) {
       messageList.fetchMessages();
     }
+  }
+
+  toggleManagerMode() {
+    this.isManager = !this.isManager;
   }
 }
