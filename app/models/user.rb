@@ -21,25 +21,33 @@ class User
 
     has_many :sms_messages
     has_many :approval_records
-
+    
     index({ email: 1 }, { unique: true, background: true }) # Background indexing won't block operations
     index({ status: 1 }, { background: true })
-
+    
     # OPTIMIZATION #2: Compound index for queries that filter on multiple fields
     # Order matters! Most selective field first (status), then secondary filter (approval_count)
     index({ status: 1, approval_count: 1 }, { background: true })
     index({ jti: 1 }, { unique: true })
-
+    
     # OPTIMIZATION #3: TTL index for automatically expiring documents
     # Automatically remove reset password tokens after 6 hours
     index({ reset_password_sent_at: 1 }, {   expire_after_seconds: 21600, background: true })
-
+    
     # OPTIMIZATION #4: Specify fields you'll never need to query to omit from indexes
     field :login_history, type: Array, default: []
-
+    
     # Callbacks
     before_create :ensure_jti
     after_create :new_user_creation
+    
+    # has_many :managers, through: :approval_records
+    def managers
+        Manager.where(
+            :_id.in => approval_records.where(user_id: self._id)
+            .pluck(:manager_id)
+        )
+    end
 
     def activate_if_approved
         if approval_count >= 2

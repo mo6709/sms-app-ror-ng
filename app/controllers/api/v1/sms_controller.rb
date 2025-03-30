@@ -44,6 +44,10 @@ module Api
                 end
             end
 
+            def show
+                sms_id = params[:id]
+                SmsMessage.find_by(sms_id)
+            end
             
             private
 

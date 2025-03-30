@@ -7,6 +7,15 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      get "approval_records" => 'approval_records#index', defaults: { format: :json }
+      post "approval_records" => 'approval_records#create', defaults: { format: :json }
+
+      resource :approval_records_reports do
+        member do
+          get 'download', constraints: { format: 'pdf' }
+        end
+      end
+
       devise_for :users,
                  defaults: { format: :json },
                  controllers: {
@@ -19,7 +28,8 @@ Rails.application.routes.draw do
                    sign_out: 'logout',
                    registration: 'register'
                  }
-      resources :sms, only: [:create, :index] do
+      # get 'sms/:id', to: 'sms#show'
+      resources :sms, only: [:create, :index, :show] do
         collection do
           post :status
         end
