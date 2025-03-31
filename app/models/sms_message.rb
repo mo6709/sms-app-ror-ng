@@ -29,7 +29,7 @@ class SmsMessage
     index({ twilio_sid: 1 }, { sparse: true, background: true })
 
     # INDEX STRATEGY #5: TTL index for automatic document expiration
-    index({ created_at: 1 }, { experation: 90.days.in_milliseconds, background: true })
+    index({ created_at: 1 }, { expire_after_seconds: 90.days.in_milliseconds, background: true })
 
     # INDEX STRATEGY #6: Unique index for fields that must be unique
     # Prevents duplicate tracking of the same external SMS
@@ -46,9 +46,9 @@ class SmsMessage
         }
     )
 
-    validate :to_number, presence: true
-    validate :message, presence: true
-    validates :status, inclusion: { in: ['queued', 'sending', 'sent', 'delivered', 'undelivered', 'failed', 'received'] }
+    validates :to_number, presence: true
+    validates :message, presence: true
+    # validates :status, inclusion: { in: ['queued', 'sending', 'sent', 'delivered', 'undelivered', 'failed', 'received'] }
 
     # This query uses the compound index
     def self.recent_by_user(user_id, limit = 10)
