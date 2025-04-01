@@ -32,6 +32,9 @@ import { Router } from '@angular/router';
             <span class="status" [class.status-sent]="message.status === 'sent'">
               Status: {{ message.status }}
             </span>
+            <button (click)="onDelete(message._id)" class="delete-button">
+              Delete
+            </button>
           </div>
           <div class="message-body">{{ message.message }}</div>
           <div class="message-footer">
@@ -186,5 +189,23 @@ export class MessageListComponent implements OnInit, OnDestroy {
         console.error('Error fetching messages:', error);
       }
     });
+  }
+
+  onDelete(id: string) {
+    const token = localStorage.getItem('token');
+    // if (!token) {
+    //   this.router.navigate(['/login']);
+    //   return;
+    // }
+
+    this.http.delete(`http://localhost:3000/api/v1/sms/${id}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    }).subscribe({
+      next: (response: any) => {
+        console.log("Message deleted successfully")
+      }
+    })
   }
 } 
