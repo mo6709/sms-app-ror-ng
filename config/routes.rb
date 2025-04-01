@@ -29,7 +29,7 @@ Rails.application.routes.draw do
                    registration: 'register'
                  }
       # get 'sms/:id', to: 'sms#show'
-      resources :sms, only: [:create, :index, :show] do
+      resources :sms, only: [:create, :index, :show, :destroy] do
         collection do
           post :status
         end

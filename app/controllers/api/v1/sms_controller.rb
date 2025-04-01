@@ -22,8 +22,33 @@ module Api
             end
 
             def index
-                sms_messages = @current_user.sms_messages
+                sms_messages = @current_user.sms_messages.active
                 render json: sms_messages
+            end
+
+            def destroy
+                id = BSON::ObjectId.from_string(params.require(:id))
+                puts "my require id: #{id}"
+                puts "my require id: #{id.to_s}"
+
+                sms = @current_user.sms_messages.find_one_and_update(
+                    { _id: id },
+                    { '$set' => {
+                        deleted: true,
+                        deleted_at: Time.now
+                    }},
+                )
+                
+                if sms
+                    render json: { 
+                        message: "Message flaged as deleted", 
+                        id: sms._id,
+                    }, status: :ok
+                else
+                    render json: {
+                        error: "can't find sms"
+                    }, status: :not_found
+                end
             end
 
             def status
@@ -50,7 +75,6 @@ module Api
             end
             
             private
-
             def sms_params
                 params.require(:sms_params).permit(:to_number, :message)
             end

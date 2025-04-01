@@ -3,4 +3,4 @@
 /log/*
 !/log/.keep
 *.log
-
+node_modules/

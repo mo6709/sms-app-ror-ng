@@ -12,7 +12,7 @@ class TwilioService
             from: ENV['TWILIO_PHONE_NUMBER'],
             to: to_number,
             body: message,
-            status_callback: "https://fe4a-69-121-44-94.ngrok-free.app/api/v1/sms/status"
+            status_callback: "https://2560-69-121-44-94.ngrok-free.app/api/v1/sms/status"
         )
     end
 end
